@@ -7,7 +7,9 @@ function Navbar() {
     const [visible , setVisible] = useState(false);
   return(
     <div className="py-5 flex items-center justify-between font-medium">
-        <img src={assets.logo} className="w-36" alt="website-logo"/>
+
+        <Link to='/'><img src={assets.logo} className="w-36" alt="website-logo"/></Link>
+
         <nav className="hidden sm:flex gap-5 text-sm text-gray-700">
             <NavLink to="/" className="flex items-center flex-col gap-1">
                 <p>HOME</p>
@@ -62,7 +64,6 @@ function Navbar() {
             </div>
             
         </div>
-       
     </div>
   )
 }
