@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 import { assets } from "../assets/assets";
+import RelatedProducts from "../components/RelatedProducts";
 
 function Product() {
 
   const {productId} = useParams();
-  const {products , currency} = useContext(ShopContext);
+  const {products , currency,addToCart} = useContext(ShopContext);
   const [productData,setProductData] = useState(false);
   const [image,setImage] = useState('');
   const [size,setSize] = useState('');
@@ -69,7 +70,7 @@ function Product() {
           </div>
 
         </div>
-        <button className="bg-black text-white py-3 px-8 active:bg-gray-700">ADD TO CART</button>
+        <button onClick={()=>addToCart(productData._id,size)} className="bg-black text-white py-3 px-8 active:bg-gray-700 cursor-pointer">ADD TO CART</button>
         <hr className="mt-5 sm:w-4/5 text-gray-100"/>
 
         <div className="text-sm text-gray-500 mt-3 flex flex-col gap-1">
@@ -90,6 +91,8 @@ function Product() {
 
       </div>
     </div>
+
+    <RelatedProducts category={productData.category} subCategory={productData.subCategory} />
    </div>
    :<div className="opacity-0"></div>;
 }

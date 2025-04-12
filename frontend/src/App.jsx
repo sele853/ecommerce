@@ -10,12 +10,14 @@ import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import Order from "./pages/Order";
 import Layout from "./components/Layout";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const App = () => {
   return (
     <BrowserRouter>
       <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
+        <ToastContainer />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
