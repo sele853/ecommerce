@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext , useState } from "react";
 import { products } from "../assets/assets";
 import { toast } from "react-toastify";
 
@@ -65,8 +65,15 @@ const ShopContextProvider = (props) => {
     return totalCount;
    }
 
+   const updateQuantity = async (itemId,size,quantity) => {
+    let cartData = structuredClone(cartItems);
+    cartData[itemId][size] = quantity;
+    setCartItems(cartData);
+
+   }
+
     const value = {
-        products,currency,delivery_fee,search,setSearch,showSearch,setShowSearch,cartItems,addToCart,getCartCount
+        products,currency,delivery_fee,search,setSearch,showSearch,setShowSearch,cartItems,addToCart,getCartCount,updateQuantity
     }
 
     return (
