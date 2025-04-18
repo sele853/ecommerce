@@ -31,7 +31,7 @@ function Order() {
                   <p className="min-w-2 h-2 rounded-full bg-green-500"></p>
                   <p className="text-sm md:text-base">READY TO SHIP</p>
                </div>
-               <button className="border border-gray-200 px-4 py-2 text-sm font-medium rounded-sm">TRACK ORDER</button>
+               <button className="border border-gray-200 px-4 py-2 text-sm font-medium rounded-sm cursor-pointer">TRACK ORDER</button>
             </div>
           </div>
         ))
