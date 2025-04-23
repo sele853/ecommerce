@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 
 const createToken = (id) => {
-  return jwt.sign({ id }, process.env.JSON_SECRET);
+  return jwt.sign({ id }, process.env.JWT_SECRET);
 };
 // route for user login
 const loginUser = async (req, res) => {
@@ -74,6 +74,22 @@ const registerUser = async (req, res) => {
 };
 
 //route for adim login
-const adminLogin = async (req, res) => {};
+const adminLogin = async (req, res) => {
+    try {
+        const {email,password} = req.body
+        if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
+            const token = jwt.sign(email+password,process.env.JWT_SECRET)
+            res.json({success:true , message:token})
+        }
+        else{
+            res.json({success:false, message: "invalid credentials"})
+        }
+        
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+        
+    }
+};
 
 export { loginUser, registerUser, adminLogin };
