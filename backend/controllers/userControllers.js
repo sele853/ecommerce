@@ -75,21 +75,23 @@ const registerUser = async (req, res) => {
 
 //route for adim login
 const adminLogin = async (req, res) => {
-    try {
-        const {email,password} = req.body
-        if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
-            const token = jwt.sign(email+password,process.env.JWT_SECRET)
-            res.json({success:true , message:token})
-        }
-        else{
-            res.json({success:false, message: "invalid credentials"})
-        }
-        
-    } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: error.message });
-        
+  try {
+    const { email, password } = req.body;
+    if (
+      email === process.env.ADMIN_EMAIL &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+      res.json({ success: true, token: token });
+    } else {
+      res.json({ success: false, message: "invalid credentials" });
     }
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
 };
 
 export { loginUser, registerUser, adminLogin };

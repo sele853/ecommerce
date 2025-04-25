@@ -8,33 +8,36 @@ const Login = ({ setToken }) => {
   const [password, setPassword] = useState("");
 
   const onSubmitHandler = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
       const response = await axios.post(backendUrl + "/api/user/admin", {
         email,
         password,
       });
+
       if (response.data.success) {
         setToken(response.data.token);
+        toast.success("Login successful");
       } else {
-        toast.error(response.data.message);
+        toast.error(response.data.message || "Login failed");
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center">
       <div className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md">
         <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
         <form onSubmit={onSubmitHandler}>
           <div className="mb-3 min-w-72">
-            <p className="text-sm font-medium text-gray-700 mb-2 ">
+            <p className="text-sm font-medium text-gray-700 mb-2">
               Email Address
             </p>
             <input
-              className="rounded-md w-full px-3 py-2 border border-gray-300 outline-none "
+              className="rounded-md w-full px-3 py-2 border border-gray-300 outline-none"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -45,7 +48,7 @@ const Login = ({ setToken }) => {
           <div className="mb-3 min-w-72">
             <p>Password</p>
             <input
-              className="rounded-md w-full px-3 py-2 border border-gray-300 outline-none "
+              className="rounded-md w-full px-3 py-2 border border-gray-300 outline-none"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
