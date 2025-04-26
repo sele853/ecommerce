@@ -277,8 +277,8 @@ const Add = ({ token }) => {
 
       <div className="flex gap-2 mt-2">
         <input
-          onChange={() => setBestseller((prev) => !prev)}
           checked={bestseller}
+          onChange={() => setBestseller((prev) => !prev)}
           type="checkbox"
           id="bestseller"
         />

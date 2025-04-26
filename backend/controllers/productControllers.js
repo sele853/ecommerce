@@ -12,7 +12,7 @@ const addProduct = async (req, res) => {
       category,
       subCategory,
       sizes,
-      bestSellers,
+      bestseller,
     } = req.body;
 
     const image1 = req.files.image1 && req.files.image1[0];
@@ -39,7 +39,7 @@ const addProduct = async (req, res) => {
       category,
       price: Number(price),
       subCategory,
-      bestSellers: bestSellers === "true" ? true : false,
+      bestseller: bestseller === "true" ? true : false,
       sizes: JSON.parse(sizes),
       images: imagesUrl,
       date: Date.now(),

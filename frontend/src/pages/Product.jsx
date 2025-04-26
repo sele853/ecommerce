@@ -17,7 +17,7 @@ function Product() {
       if(item._id === productId)
       {
         setProductData(item);
-        setImage(item.image[0])
+        setImage(item.images[0])
         return null;
       }
     })}
@@ -34,7 +34,7 @@ function Product() {
         <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal w-full sm:w-[18.7%]">
 
           {
-            productData.image.map((item,index)=>(
+            productData.images.map((item,index)=>(
               <img onClick={()=>setImage(item)} src={item} key={index} className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer" alt="" />
             ))
           }
