@@ -41,7 +41,6 @@ function Cart() {
             );
 
             if (!productData) {
-              console.log(`Product with id ${item._id} not found`);
               return null; 
             }
 

@@ -102,8 +102,7 @@ const ShopContextProvider = (props) => {
       const itemInfo = products.find((product) => product._id === itemId);
   
       if (!itemInfo) {
-        console.log(`Product with id ${itemId} not found`);
-        continue;  // important: skip the rest of the loop if not found
+        continue; 
       }
   
       for (const size in cartItems[itemId]) {
