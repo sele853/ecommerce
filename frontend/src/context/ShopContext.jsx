@@ -12,9 +12,9 @@ const ShopContextProvider = (props) => {
   const [showSearch, setShowSearch] = useState(true);
   const [cartItems, setCartItems] = useState({});
   const [products, setProducts] = useState([]);
-  const [token , setToken] = useState('')
+  const [token, setToken] = useState("");
 
-  const addToCart = (itemId, size) => {
+  const addToCart = async (itemId, size) => {
     if (!size) {
       toast.error("Please Select the product size!");
       return;
@@ -33,6 +33,19 @@ const ShopContextProvider = (props) => {
     }
 
     setCartItems(cartData);
+
+    if (token) {
+      try {
+        await axios.post(
+          backendUrl + "/api/cart/add",
+          { itemId, size },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
+      }
+    }
   };
 
   const getCartCount = () => {
@@ -52,29 +65,58 @@ const ShopContextProvider = (props) => {
   };
 
   const updateQuantity = async (itemId, size, quantity) => {
-    let cartData = structuredClone(cartItems);
-    cartData[itemId][size] = quantity;
-    setCartItems(cartData);
+    try {
+      let cartData = structuredClone(cartItems);
+      cartData[itemId][size] = quantity;
+      setCartItems(cartData);
+      if (token) {
+        await axios.post(
+          backendUrl + "/api/cart/update",
+          { itemId, size, quantity },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
+
+  const getUserCart = async (token) => {
+    try {
+      const response = await axios.post(backendUrl + "/api/cart/get",{},{headers : {Authorization : `Bearer ${token}`}});
+      if(response.data.success)
+      {
+        setCartItems(response.data.cartData);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+      
+    }
+  }
 
   const getTotalAmount = () => {
     let totalAmount = 0;
-    for (const items in cartItems) {
-      let itemInfo = products.find((product) => product._id === items);
-      {
-        for (const item in cartItems[items]) {
-          try {
-            if (cartItems[items][item] > 0) {
-              totalAmount += itemInfo.price * cartItems[items][item];
-            }
-          } catch (error) {
-            console.log(error);
-          }
+    for (const itemId in cartItems) {
+      const itemInfo = products.find((product) => product._id === itemId);
+  
+      if (!itemInfo) {
+        console.log(`Product with id ${itemId} not found`);
+        continue;  // important: skip the rest of the loop if not found
+      }
+  
+      for (const size in cartItems[itemId]) {
+        const quantity = cartItems[itemId][size];
+        if (quantity > 0) {
+          totalAmount += itemInfo.price * quantity;
         }
       }
     }
     return totalAmount;
   };
+  
+  
 
   const getProductsData = async () => {
     try {
@@ -95,12 +137,11 @@ const ShopContextProvider = (props) => {
   }, []);
 
   useEffect(() => {
-    if(!token && localStorage.getItem("token"))
-    {
+    if (!token && localStorage.getItem("token")) {
       setToken(localStorage.getItem("token"));
+      getUserCart(localStorage.getItem("token"))
     }
-  
-  },[])
+  }, []);
 
   const value = {
     products,
