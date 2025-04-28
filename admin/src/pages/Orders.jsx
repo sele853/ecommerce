@@ -20,7 +20,7 @@ const Orders = ({ token }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response.data.success) {
-        setOrder(response.data.orders);
+        setOrder(response.data.orders.reverse());
       } else {
         toast.error(response.data.message);
       }
