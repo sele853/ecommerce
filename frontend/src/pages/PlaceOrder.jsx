@@ -80,6 +80,22 @@ function PlaceOrder() {
           }
           break;
 
+        case "Stripe":
+          {
+            const responseStripe = await axios.post(
+              backendUrl + "/api/order/stripe",
+              orderData,
+              { headers: { Authorization: `Bearer ${token}` } }
+            );
+            if (responseStripe.data.success) {
+              const session_url = responseStripe.data.session_url;
+              window.location.replace(session_url);
+            } else {
+              toast.error(responseStripe.data.message);
+            }
+          }
+          break;
+
         default:
           break;
       }
@@ -199,30 +215,19 @@ function PlaceOrder() {
           <Title text1={"PAYMENT"} text2={"METHOD"} />
           <div className="flex flex-col lg:flex-row gap-3">
             <div
-              onClick={() => setMethod("stripe")}
-              className="flex items-center gap-3 border border-gray-200 p-2 px-3 cursor-pointer"
+              onClick={() => setMethod("Stripe")}
+              className="flex items-center gap-3 border border-gray-200 p-2 pl-3 pr-15 cursor-pointer"
             >
               <p
                 className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "stripe" ? "bg-green-400" : ""
+                  method === "Stripe" ? "bg-green-400" : ""
                 }`}
               ></p>
               <img className="h-5 mx-4" src={assets.stripe_logo} alt="" />
             </div>
-            <div
-              onClick={() => setMethod("razorpay")}
-              className="flex items-center gap-3 border border-gray-200 p-2 px-3 cursor-pointer"
-            >
-              <p
-                className={`min-w-3.5 h-3.5 border rounded-full ${
-                  method === "razorpay" ? "bg-green-400" : ""
-                }`}
-              ></p>
-              <img className="h-5 mx-4" src={assets.razorpay_logo} alt="" />
-            </div>
-            <div
+            <div 
               onClick={() => setMethod("cod")}
-              className="flex items-center gap-3 border border-gray-200 p-2 px-3 cursor-pointer"
+              className="flex items-center gap-3 border border-gray-200 p-2 pl-3 pr-15  cursor-pointer"
             >
               <p
                 className={`min-w-3.5 h-3.5 border rounded-full ${
