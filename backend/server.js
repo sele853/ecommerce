@@ -17,7 +17,7 @@ connectCloudinary()
 //middlewares
 app.use(express.json())
 app.use(cors({
-    origin: 'https://ecommerce-frontend-gamma-roan.vercel.app',
+    origin: 'https://ecommerce-frontend-vert-seven.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
   }));
